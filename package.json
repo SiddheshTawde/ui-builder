@@ -3,20 +3,21 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "dev:main": "turbo dev --filter=web",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
-    "clean": "turbo clean",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "clean": "turbo run clean && rm -rf node_modules && rm -rf .turbo && rm -rf package-lock.json",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.11",
     "turbo": "^2.0.6"
   },
   "engines": {
     "node": ">=18"
   },
-  "name": "with-tailwind",
+  "name": "ui-builder",
   "packageManager": "npm@10.7.0",
   "workspaces": [
     "apps/*",
