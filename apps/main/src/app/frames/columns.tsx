@@ -13,9 +13,7 @@ import { Tables } from "@root/supabase/supabase.types";
 export const columns: ColumnDef<Tables<"frames">>[] = [
   {
     accessorKey: "name",
-    header: "Frame Name",
-    enableSorting: true,
-    enablePinning: true,
+    header: "Name",
     cell: ({ row }) => {
       return (
         <Button variant="link" asChild>
@@ -25,6 +23,7 @@ export const columns: ColumnDef<Tables<"frames">>[] = [
         </Button>
       );
     },
+    enableHiding: false,
   },
   {
     accessorKey: "updated_by_name",
@@ -45,23 +44,5 @@ export const columns: ColumnDef<Tables<"frames">>[] = [
     header: "Created On",
     cell: ({ row }) =>
       moment(row.getValue("created_on")).format("MMM DD, YYYY"),
-  },
-  {
-    accessorKey: "actions",
-    header: () => (
-      <div
-        style={{
-          textAlign: "center",
-        }}
-      >
-        Header
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="flex items-center justify-center gap-x-12">
-        <Button variant="link">Edit</Button>
-        <Button variant="destructive">Delete</Button>
-      </div>
-    ),
   },
 ];

@@ -1,7 +1,6 @@
 import React from "react";
 import { useDrag } from "react-dnd";
-
-import { Tag } from "@root/app/frames/add/page";
+import { Tag } from "@root/types/frame.type";
 
 export interface DraggableElementProps extends React.PropsWithChildren {
   type: Tag;
@@ -25,11 +24,7 @@ export function DraggableElement({ type, children }: DraggableElementProps) {
   }, [drag]);
 
   return (
-    <div
-      ref={ref}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
-      className="flex items-center justify-between border bg-transparent/5 px-4 py-2"
-    >
+    <div ref={ref} style={{ opacity: isDragging ? 0.5 : 1 }}>
       {children}
     </div>
   );

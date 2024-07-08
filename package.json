@@ -3,7 +3,7 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "dev:main": "turbo dev --filter=web",
+    "dev:main": "turbo dev --filter=main",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "changeset": "changeset",

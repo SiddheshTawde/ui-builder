@@ -7,20 +7,27 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="flex h-16 w-full items-center justify-between px-12">
+    <header className="container mx-auto flex h-16 w-full items-center justify-between border-b px-8">
       <div className="flex items-center gap-x-12">
-        <Link href="/">
-          <span className="text-lg font-black text-transparent/60 transition-colors hover:text-transparent/100">
-            UI Builder
-          </span>
-        </Link>
-        <nav className="flex items-center gap-x-12">
+        <Button
+          variant="link"
+          className="px-0 text-lg font-black text-transparent/60 transition-colors hover:text-transparent/100"
+          asChild
+        >
+          <Link href="/">UI Builder</Link>
+        </Button>
+        <nav className="flex items-center">
           {navs.map(({ href, title }) => (
-            <Link key={href} href={href} className="semibold">
-              <span className="text-sm font-medium text-transparent/80 hover:text-transparent/100">
+            <Button
+              key={href}
+              variant="link"
+              className="text-sm font-medium text-transparent/80 hover:text-transparent/100"
+              asChild
+            >
+              <Link href={href} className="semibold">
                 {title}
-              </span>
-            </Link>
+              </Link>
+            </Button>
           ))}
         </nav>
       </div>

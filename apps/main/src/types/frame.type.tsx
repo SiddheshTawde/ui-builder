@@ -1,13 +1,13 @@
 export type Tag = "header" | "nav" | "aside" | "section" | "footer";
 
 export type Frame = {
-  header: {
+  header?: {
     render: boolean;
   };
-  nav: {
+  nav?: {
     render: boolean;
   };
-  aside: {
+  aside?: {
     render: boolean;
   };
   main: Record<
@@ -16,7 +16,7 @@ export type Frame = {
       render: boolean;
     }
   >;
-  footer: {
+  footer?: {
     render: boolean;
   };
 };

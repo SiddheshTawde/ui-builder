@@ -11,20 +11,17 @@ import { columns } from "./columns";
 export default async function FramesPage() {
   const { data, error } = await supabase.from("frames").select("*").limit(10);
 
+  if (error) {
+    return <div>There was some error</div>;
+  }
+
   return (
-    <main className="container mx-auto">
-      <div className="mb-4 flex w-full items-center justify-between">
-        <p className="text-lg font-medium">Available Frames</p>
-
-        <Button variant="default" className="flex items-center gap-2" asChild>
-          <Link href="/frames/add">
-            <PlusIcon className="h-4 w-4" />
-            <span>Add New Frame</span>
-          </Link>
-        </Button>
-      </div>
-
-      {data !== null ? <DataTable columns={columns} data={data} /> : null}
+    <main className="container mx-auto h-[calc(100vh-64px)]">
+      <DataTable
+        columns={columns}
+        data={data}
+        add={{ title: "Add New Frame", href: "/frames/add" }}
+      />
     </main>
   );
 }

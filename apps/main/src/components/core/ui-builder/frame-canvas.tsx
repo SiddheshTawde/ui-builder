@@ -1,7 +1,7 @@
 // Canvas.tsx
+import { Frame, Tag } from "@root/types/frame.type";
 import React from "react";
 import { useDrop } from "react-dnd";
-import { Frame, Tag } from "@root/app/frames/add/page";
 
 type FrameCanvasProps = {
   frame: Frame;
@@ -50,19 +50,19 @@ export const FrameCanvas = ({ frame, updateFrame }: FrameCanvasProps) => {
   return (
     <div ref={ref} className="relative h-full w-full">
       <div className="flex h-full w-full flex-col gap-4 border p-4">
-        {frame.header.render ? (
+        {frame.header?.render ? (
           <div className="flex h-16 items-center justify-center border bg-transparent/5">
             header
           </div>
         ) : null}
-        {frame.nav.render ? (
+        {frame.nav?.render ? (
           <div className="flex h-12 items-center justify-center border bg-transparent/5">
             navbar
           </div>
         ) : null}
 
         <main className="flex flex-1 flex-row items-stretch gap-x-4">
-          {frame.aside.render ? (
+          {frame.aside?.render ? (
             <div className="flex w-80 items-center justify-center border bg-transparent/5">
               aside
             </div>
@@ -82,7 +82,7 @@ export const FrameCanvas = ({ frame, updateFrame }: FrameCanvasProps) => {
           </div>
         </main>
 
-        {frame.footer.render ? (
+        {frame.footer?.render ? (
           <div className="flex h-16 items-center justify-center border bg-transparent/5">
             footer
           </div>
