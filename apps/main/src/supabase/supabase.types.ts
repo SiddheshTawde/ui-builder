@@ -13,35 +13,35 @@ export type Database = {
         Row: {
           created_at: string
           created_by: string
-          created_by_name: string
+          created_by_id: string
           id: string
           name: string
           template: Json
           updated_at: string
           updated_by: string
-          updated_by_name: string
+          updated_by_id: string
         }
         Insert: {
           created_at?: string
           created_by?: string
-          created_by_name?: string
+          created_by_id?: string
           id?: string
           name?: string
           template?: Json
           updated_at?: string
           updated_by?: string
-          updated_by_name?: string
+          updated_by_id?: string
         }
         Update: {
           created_at?: string
           created_by?: string
-          created_by_name?: string
+          created_by_id?: string
           id?: string
           name?: string
           template?: Json
           updated_at?: string
           updated_by?: string
-          updated_by_name?: string
+          updated_by_id?: string
         }
         Relationships: []
       }

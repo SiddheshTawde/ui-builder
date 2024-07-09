@@ -33,8 +33,8 @@ export default function RenderEditFrame({
       .from("frames")
       .update({
         template: frame,
-        updated_by: user?.id,
-        updated_by_name: user?.fullName || "",
+        updated_by_id: user?.id,
+        updated_by: user?.fullName || "",
       })
       .eq("name", name)
       .single();

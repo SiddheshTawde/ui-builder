@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf %SystemDrive%"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf %SystemDrive% && rm -rf storybook-static"
   },
   "dependencies": {
     "@repo/ui-components": "*"

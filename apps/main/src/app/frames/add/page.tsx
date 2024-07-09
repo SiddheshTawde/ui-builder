@@ -1,7 +1,6 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import {
   UIBuilder,
   DraggableElement,
@@ -9,7 +8,13 @@ import {
 } from "@root/components/core/ui-builder";
 
 import { Button } from "@root/components/ui/button";
-import { Card, CardHeader } from "@root/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@root/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -42,10 +47,10 @@ export default function AddNewFrame() {
       .insert({
         name: frameName.replaceAll(" ", "-").toLowerCase(),
         template: frame,
-        created_by: user?.id,
-        created_by_name: user?.fullName || "",
-        updated_by: user?.id,
-        updated_by_name: user?.fullName || "",
+        created_by_id: user?.id,
+        created_by: user?.fullName || "",
+        updated_by_id: user?.id,
+        updated_by: user?.fullName || "",
       })
       .eq("name", "")
       .single();
@@ -67,8 +72,15 @@ export default function AddNewFrame() {
             <p className="text-lg font-semibold">Frame Elements:</p>
             {FRAME_ELEMENTS.map((element) => (
               <DraggableElement key={element.tag} type={element.tag as Tag}>
-                <Card>
-                  <CardHeader>{element.display}</CardHeader>
+                <Card className="shadow-none active:cursor-grabbing">
+                  <CardHeader>
+                    <CardTitle>{element.display}</CardTitle>
+                    <CardDescription>
+                      {element.tag === "section"
+                        ? "This frame can have multiple Sections"
+                        : `This frame can only have 1 ${element.display}`}
+                    </CardDescription>
+                  </CardHeader>
                 </Card>
               </DraggableElement>
             ))}
@@ -88,7 +100,7 @@ export default function AddNewFrame() {
           <DialogTrigger asChild>
             <Button variant="default">Save Frame</Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-lg">
             <DialogHeader>
               <DialogTitle>Create new Frame</DialogTitle>
               <DialogDescription className="flex gap-1">
@@ -101,18 +113,14 @@ export default function AddNewFrame() {
                 <span>section.</span>
               </DialogDescription>
             </DialogHeader>
-            <div className="py-4">
-              <Label htmlFor="name" className="mb-1">
-                Frame Name
-              </Label>
+            <div className="space-y-2 py-4">
               <Input
-                id="name"
                 placeholder="Enter frame name here"
                 value={frameName}
                 onChange={(event) => setFrameName(event.currentTarget.value)}
               />
-              <div className="mt-2 text-sm text-transparent/80">
-                Note: The spaces in Name will be replaced by dash {"(-)"}
+              <div className="text-sm text-transparent/80">
+                Note: The spaces in Name will be replaced by dashes {"(-)"}.
               </div>
             </div>
             <DialogFooter>

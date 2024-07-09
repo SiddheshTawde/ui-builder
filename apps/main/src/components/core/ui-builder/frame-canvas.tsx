@@ -1,7 +1,10 @@
-// Canvas.tsx
-import { Frame, Tag } from "@root/types/frame.type";
+"use client";
+
 import React from "react";
 import { useDrop } from "react-dnd";
+
+import { Frame, Tag } from "@root/types/frame.type";
+import { Card, CardHeader, CardTitle } from "@root/components/ui/card";
 
 type FrameCanvasProps = {
   frame: Frame;
@@ -51,41 +54,51 @@ export const FrameCanvas = ({ frame, updateFrame }: FrameCanvasProps) => {
     <div ref={ref} className="relative h-full w-full">
       <div className="flex h-full w-full flex-col gap-4 border p-4">
         {frame.header?.render ? (
-          <div className="flex h-16 items-center justify-center border bg-transparent/5">
-            header
-          </div>
+          <Card className="bg-transparent/5 text-center">
+            <CardHeader>
+              <CardTitle>Header</CardTitle>
+            </CardHeader>
+          </Card>
         ) : null}
         {frame.nav?.render ? (
-          <div className="flex h-12 items-center justify-center border bg-transparent/5">
-            navbar
-          </div>
+          <Card className="flex items-center justify-center bg-transparent/5 text-center">
+            <CardHeader>
+              <CardTitle>Nav</CardTitle>
+            </CardHeader>
+          </Card>
         ) : null}
 
         <main className="flex flex-1 flex-row items-stretch gap-x-4">
           {frame.aside?.render ? (
-            <div className="flex w-80 items-center justify-center border bg-transparent/5">
-              aside
-            </div>
+            <Card className="flex w-[25%] items-center justify-center bg-transparent/5 text-center">
+              <CardHeader>
+                <CardTitle>Aside</CardTitle>
+              </CardHeader>
+            </Card>
           ) : null}
 
           <div className="flex flex-1 flex-col gap-y-4">
             {Object.keys(frame.main).map((section) =>
               frame.main[section].render ? (
-                <div
+                <Card
                   key={section}
-                  className="flex w-full flex-1 items-center justify-center border bg-transparent/5"
+                  className="flex flex-1 items-center justify-center bg-transparent/5 text-center"
                 >
-                  {section}
-                </div>
+                  <CardHeader>
+                    <CardTitle className="capitalize">{section.replaceAll("-", " ")}</CardTitle>
+                  </CardHeader>
+                </Card>
               ) : null,
             )}
           </div>
         </main>
 
         {frame.footer?.render ? (
-          <div className="flex h-16 items-center justify-center border bg-transparent/5">
-            footer
-          </div>
+          <Card className="bg-transparent/5 text-center">
+            <CardHeader>
+              <CardTitle>Footer</CardTitle>
+            </CardHeader>
+          </Card>
         ) : null}
       </div>
 

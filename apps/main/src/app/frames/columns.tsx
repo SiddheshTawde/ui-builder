@@ -13,7 +13,9 @@ import { Tables } from "@root/supabase/supabase.types";
 export const columns: ColumnDef<Tables<"frames">>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ header }) => (
+      <span className="capitalize">{header.id.replaceAll("_", " ")}</span>
+    ),
     cell: ({ row }) => {
       return (
         <Button variant="link" asChild>
@@ -26,23 +28,31 @@ export const columns: ColumnDef<Tables<"frames">>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "updated_by_name",
-    header: "Updated By",
+    accessorKey: "updated_by",
+    header: ({ header }) => (
+      <span className="capitalize">{header.id.replaceAll("_", " ")}</span>
+    ),
   },
   {
-    accessorKey: "updated_on",
-    header: "Updated On",
+    accessorKey: "updated_at",
+    header: ({ header }) => (
+      <span className="capitalize">{header.id.replaceAll("_", " ")}</span>
+    ),
     cell: ({ row }) =>
-      moment(row.getValue("updated_on")).format("MMM DD, YYYY"),
+      moment(row.getValue("updated_at")).format("MMM DD, YYYY"),
   },
   {
-    accessorKey: "created_by_name",
-    header: "Created By",
+    accessorKey: "created_by",
+    header: ({ header }) => (
+      <span className="capitalize">{header.id.replaceAll("_", " ")}</span>
+    ),
   },
   {
-    accessorKey: "created_on",
-    header: "Created On",
+    accessorKey: "created_at",
+    header: ({ header }) => (
+      <span className="capitalize">{header.id.replaceAll("_", " ")}</span>
+    ),
     cell: ({ row }) =>
-      moment(row.getValue("created_on")).format("MMM DD, YYYY"),
+      moment(row.getValue("created_at")).format("MMM DD, YYYY"),
   },
 ];

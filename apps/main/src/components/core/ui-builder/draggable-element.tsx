@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { useDrag } from "react-dnd";
+
 import { Tag } from "@root/types/frame.type";
 
 export interface DraggableElementProps extends React.PropsWithChildren {
@@ -24,7 +27,13 @@ export function DraggableElement({ type, children }: DraggableElementProps) {
   }, [drag]);
 
   return (
-    <div ref={ref} style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div
+      ref={ref}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        cursor: isDragging ? "grabbing" : "default",
+      }}
+    >
       {children}
     </div>
   );
