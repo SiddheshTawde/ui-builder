@@ -1,9 +1,4 @@
-import Link from "next/link";
-
-import { PlusIcon } from "@heroicons/react/24/outline";
-
 import { supabase } from "@root/supabase/server";
-import { Button } from "@root/components/ui/button";
 import { DataTable } from "@root/components/core/data-table";
 
 import { columns } from "./columns";

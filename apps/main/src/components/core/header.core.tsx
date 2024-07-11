@@ -34,7 +34,7 @@ export default function Header() {
 
       <div>
         <SignedOut>
-          <Button variant="link" asChild>
+          <Button variant="secondary" asChild>
             <SignInButton mode="modal" />
           </Button>
         </SignedOut>
