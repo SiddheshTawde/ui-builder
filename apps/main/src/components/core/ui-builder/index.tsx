@@ -5,7 +5,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 export { FrameCanvas } from "./frame-canvas";
-export { DraggableElement } from "./draggable-element";
+export { NewElement, type NewElementProps } from "./draggable-element";
 
 export interface UIBuilderProps extends React.PropsWithChildren {}
 

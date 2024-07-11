@@ -1,16 +1,17 @@
 "use client";
 
+import Link from "next/link";
+import { useRef, useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+
 import {
   UIBuilder,
-  DraggableElement,
+  NewElement,
   FrameCanvas,
 } from "@root/components/core/ui-builder";
-
-import { Button } from "@root/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -24,29 +25,34 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@root/components/ui/dialog";
+
+import { Button } from "@root/components/ui/button";
 import { Input } from "@root/components/ui/input";
-import { Label } from "@root/components/ui/label";
 import { toast } from "@root/components/ui/use-toast";
 
-import { FRAME_ELEMENTS } from "@root/constants/frame-elements";
 import { supabase } from "@root/supabase/server";
-import { Frame, Tag } from "@root/types/frame.type";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+
+import { Frame, FrameTag } from "@root/types/frame.type";
+
+import { FRAME_ELEMENTS } from "@root/constants/frame-elements";
+import { Json } from "@root/supabase/supabase.types";
+
+import "../frame-canvas.css";
 
 export default function AddNewFrame() {
+  const ref = useRef(null);
   const router = useRouter();
   const { user, isSignedIn } = useUser();
-  const [frame, updateFrame] = useState<Frame>({ main: {} });
+
   const [frameName, setFrameName] = useState("");
+  const [frame, updateFrame] = useState<Frame[]>([]);
 
   const handleSaving = async () => {
     const { error } = await supabase
       .from("frames")
       .insert({
         name: frameName.replaceAll(" ", "-").toLowerCase(),
-        template: frame,
+        template: frame as never as Json,
         created_by_id: user?.id,
         created_by: user?.fullName || "",
         updated_by_id: user?.id,
@@ -71,7 +77,12 @@ export default function AddNewFrame() {
           <div className="flex w-96 flex-col gap-y-4 overflow-y-auto">
             <p className="text-lg font-semibold">Frame Elements:</p>
             {FRAME_ELEMENTS.map((element) => (
-              <DraggableElement key={element.tag} type={element.tag as Tag}>
+              <NewElement
+                key={element.tag}
+                tag={element.tag as FrameTag}
+                type="new_element"
+                className={element.tag}
+              >
                 <Card className="shadow-none active:cursor-grabbing">
                   <CardHeader>
                     <CardTitle>{element.display}</CardTitle>
@@ -82,18 +93,22 @@ export default function AddNewFrame() {
                     </CardDescription>
                   </CardHeader>
                 </Card>
-              </DraggableElement>
+              </NewElement>
             ))}
           </div>
 
-          <div className="flex h-full w-full flex-col gap-4 overflow-y-auto">
+          <div
+            ref={ref}
+            className="flex h-full w-full flex-col gap-4 overflow-y-auto rounded-xl border p-4"
+          >
             <FrameCanvas frame={frame} updateFrame={updateFrame} />
           </div>
         </div>
       </UIBuilder>
+
       <div className="flex items-center justify-end gap-x-4 border-b py-4">
         <Button variant="link" onClick={() => router.back()}>
-          Cancel
+          Go Back
         </Button>
 
         <Dialog>

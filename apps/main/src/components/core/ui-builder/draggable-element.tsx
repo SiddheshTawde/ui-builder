@@ -1,20 +1,26 @@
 "use client";
 
+import { FrameTag } from "@root/types/frame.type";
 import React from "react";
 import { useDrag } from "react-dnd";
 
-import { Tag } from "@root/types/frame.type";
-
-export interface DraggableElementProps extends React.PropsWithChildren {
-  type: Tag;
+export interface NewElementProps extends React.PropsWithChildren {
+  type: "new_element" | "reorder";
+  tag: FrameTag;
+  className: string;
 }
 
-export function DraggableElement({ type, children }: DraggableElementProps) {
+export function NewElement({
+  className,
+  type,
+  tag,
+  children,
+}: NewElementProps) {
   const ref = React.useRef(null);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type,
-    item: { type, dispay: children },
+    item: { type, tag, dispay: children },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -33,6 +39,7 @@ export function DraggableElement({ type, children }: DraggableElementProps) {
         opacity: isDragging ? 0.5 : 1,
         cursor: isDragging ? "grabbing" : "default",
       }}
+      className={className}
     >
       {children}
     </div>

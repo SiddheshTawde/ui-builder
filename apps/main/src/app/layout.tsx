@@ -5,7 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 
 import "./globals.css";
-import "@repo/ui-components/dist/index.css";
+
 import Header from "@root/components/core/header.core";
 import { Toaster } from "@root/components/ui/toaster";
 
