@@ -1,5 +1,3 @@
-import { CSSProperties } from "react";
-
 export type FrameTag =
   | "header"
   | "nav"
@@ -12,7 +10,13 @@ export type FrameTag =
 export type Frame = {
   id: string;
   tag: FrameTag;
-  style: CSSProperties;
+  className: string;
   title: string;
   children: Frame[];
+};
+
+export type FrameElement = {
+  display: string;
+  tag: string;
+  className: string;
 };

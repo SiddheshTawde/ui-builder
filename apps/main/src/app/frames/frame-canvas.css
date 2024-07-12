@@ -1,45 +1,21 @@
-#frame-canvas {
-  .header,
-  .main,
-  .footer {
-    height: 64px;
-  }
-
-  .nav {
-    height: 48px;
-  }
-
-  .main {
-    flex: 1;
-    width: 100%;
-
-    > div {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  main {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: stretch;
-    column-gap: 16px;
-    padding: 36px;
-
-    > div {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      row-gap: 16px;
-
-      .section {
-        flex: 1;
-      }
-    }
-
-    .aside {
-      width: 50%;
-    }
-  }
+.group\/header:hover .group-hover\/header\:visible {
+  visibility: visible;
+}
+.group\/nav:hover .group-hover\/nav\:visible {
+  visibility: visible;
+}
+.group\/aside:hover .group-hover\/aside\:visible {
+  visibility: visible;
+}
+.group\/main:hover .group-hover\/main\:visible {
+  visibility: visible;
+}
+.group\/div:hover .group-hover\/div\:visible {
+  visibility: visible;
+}
+.group\/section:hover .group-hover\/section\:visible {
+  visibility: visible;
+}
+.group\/footer:hover .group-hover\/footer\:visible {
+  visibility: visible;
 }

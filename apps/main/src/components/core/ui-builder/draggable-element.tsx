@@ -1,47 +1,23 @@
 "use client";
 
-import { FrameTag } from "@root/types/frame.type";
 import React from "react";
-import { useDrag } from "react-dnd";
+import { Card, CardHeader, CardTitle } from "@root/components/ui/card";
 
-export interface NewElementProps extends React.PropsWithChildren {
-  type: "new_element" | "reorder";
-  tag: FrameTag;
-  className: string;
+export interface DragElementProps extends React.PropsWithChildren {
+  element: { display: string; tag: string; className: string };
 }
 
-export function NewElement({
-  className,
-  type,
-  tag,
-  children,
-}: NewElementProps) {
-  const ref = React.useRef(null);
-
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type,
-    item: { type, tag, dispay: children },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  }));
-
-  React.useEffect(() => {
-    if (ref.current) {
-      drag(ref.current);
-    }
-  }, [drag]);
-
+export function DragElement({ element }: DragElementProps) {
   return (
-    <div
-      ref={ref}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-        cursor: isDragging ? "grabbing" : "default",
-      }}
-      className={className}
+    <Card
+      draggable={true}
+      onDragStart={(event) =>
+        event.dataTransfer.setData("text/plain", JSON.stringify(element))
+      }
     >
-      {children}
-    </div>
+      <CardHeader>
+        <CardTitle>{element.display}</CardTitle>
+      </CardHeader>
+    </Card>
   );
 }

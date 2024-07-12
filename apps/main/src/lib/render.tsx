@@ -1,9 +1,6 @@
-import { createElement, ReactNode } from "react";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import React from "react";
 
-import { Card } from "@root/components/ui/card";
-import { Button } from "@root/components/ui/button";
-
+import { cn, generateUUID } from "./utils";
 import { Frame } from "@root/types/frame.type";
 import { PageJson } from "@root/types/page-json.type";
 
@@ -23,42 +20,35 @@ export function renderHTML(nodes: PageJson[], parent: HTMLElement) {
 
 export function renderElement(
   node: Frame,
+  handleDrop: React.DragEventHandler<HTMLElement>,
+  handleDragOver: React.DragEventHandler<HTMLElement>,
   removeElement?: (id: string) => void,
-): ReactNode {
-  if (node.tag === "div") {
-    return createElement(
-      node.tag,
-      { key: node.id, style: { ...node.style } },
-      node.children.length > 0
-        ? node.children.map((n) => renderElement(n, removeElement))
-        : null,
-      node.title,
-    );
-  } else {
-    return (
-      <div key={node.id} className={node.tag}>
-        <Card className="relative flex h-full w-full p-2 capitalize">
-          {removeElement ? (
-            <div className="absolute right-0 top-0 z-10 !h-fit !w-fit">
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => removeElement && removeElement(node.id)}
-              >
-                <TrashIcon className="h-4 w-4" />
-              </Button>
-            </div>
-          ) : null}
-          {createElement(
-            node.tag,
-            { style: node.style },
-            node.children.length > 0
-              ? node.children.map((n) => renderElement(n, removeElement))
-              : null,
-            node.title,
-          )}
-        </Card>
-      </div>
-    );
-  }
+): React.ReactNode {
+  return React.createElement(
+    node.tag,
+    {
+      id: node.id,
+      key: generateUUID(),
+      style: {},
+      className: cn(
+        "rounded-xl border bg-card text-card-foreground shadow-none relative",
+        [node.className],
+        { "h-12": node.tag === "nav" },
+        { "h-16": node.tag === "header" || node.tag === "footer" },
+        { "flex-1 p-2": node.tag === "main" },
+        { "flex-1 p-2": node.tag === "div" },
+        { "flex-1": node.tag === "section" },
+        { "w-56": node.tag === "aside" },
+      ),
+      onDragOver: (event: React.DragEvent<HTMLElement>) =>
+        handleDragOver(event),
+      onDrop: (event: React.DragEvent<HTMLElement>) => handleDrop(event),
+    },
+    node.children.length > 0
+      ? node.children.map((n) =>
+          renderElement(n, handleDrop, handleDragOver, removeElement),
+        )
+      : null,
+    node.title,
+  );
 }

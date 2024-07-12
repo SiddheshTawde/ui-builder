@@ -2,23 +2,33 @@ import type { Frame, FrameTag } from "@root/types/frame.type";
 import { remove } from "lodash";
 import { generateUUID } from "./utils";
 
-export function createFrame(tag: FrameTag, title: string = ""): Frame {
+export function createFrameElement(
+  tag: string,
+  display: string,
+  className: string,
+): Frame {
   return {
     id: generateUUID(),
-    tag,
-    title,
+    tag: tag as FrameTag,
+    title: display,
     children: [],
-    style: {},
+    className,
   };
 }
 
-export function findOrCreateMainFrame(frames: Frame[]): Frame {
-  let mainFrame = frames.find((frame) => frame.tag === "main");
-  if (!mainFrame) {
-    mainFrame = createFrame("main");
-    frames.push(mainFrame);
-  }
-  return mainFrame;
+export function findNodeById(
+  array: Frame[],
+  target_id: string,
+): Frame | undefined {
+  var o;
+  array.some(function iter(a) {
+    if (a.id === target_id) {
+      o = a;
+      return true;
+    }
+    return Array.isArray(a.children) && a.children.some(iter);
+  });
+  return o;
 }
 
 export function removeElementById(array: Frame[], id: string) {

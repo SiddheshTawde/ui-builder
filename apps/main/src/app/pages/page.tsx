@@ -1,7 +1,6 @@
 import { supabase } from "@root/supabase/server";
+import { columns } from "@root/constants/page-columns";
 import { DataTable } from "@root/components/core/data-table";
-
-import { columns } from "./columns";
 
 export default async function Pages() {
   const { data, error } = await supabase.from("pages").select("*").limit(10);

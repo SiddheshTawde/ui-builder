@@ -22,8 +22,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {
-    "lodash": "^4.17.21"
-  }
+  ]
 }

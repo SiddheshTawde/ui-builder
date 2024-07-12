@@ -1,7 +1,6 @@
 import { supabase } from "@root/supabase/server";
+import { columns } from "@root/constants/frame-columns";
 import { DataTable } from "@root/components/core/data-table";
-
-import { columns } from "./columns";
 
 export default async function FramesPage() {
   const { data, error } = await supabase.from("frames").select("*").limit(10);
