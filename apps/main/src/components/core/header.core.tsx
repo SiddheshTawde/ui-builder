@@ -1,9 +1,8 @@
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { Button } from "../ui/button";
-
-import navs from "./nav.config.json";
-
 import Link from "next/link";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+
+import { Button } from "../ui/button";
+import navs from "@root/constants/nav.config.json";
 
 export default function Header() {
   return (
@@ -17,14 +16,14 @@ export default function Header() {
           <Link href="/">UI Builder</Link>
         </Button>
         <nav className="flex items-center">
-          {navs.map(({ href, title }) => (
+          {navs.map(({ href, target, title }) => (
             <Button
               key={href}
               variant="link"
               className="text-sm font-medium text-transparent/80 hover:text-transparent/100"
               asChild
             >
-              <Link href={href} className="semibold">
+              <Link href={href} target={target} className="semibold">
                 {title}
               </Link>
             </Button>

@@ -16,7 +16,8 @@ export type Frame = {
 };
 
 export type FrameElement = {
-  display: string;
+  id?: string;
   tag: string;
+  display: string;
   className: string;
 };

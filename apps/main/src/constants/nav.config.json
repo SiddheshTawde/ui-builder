@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Frames",
+    "href": "/frames",
+    "target": ""
+  },
+  {
+    "title": "Pages",
+    "href": "/pages",
+    "target": ""
+  },
+  {
+    "title": "Workflows",
+    "href": "/workflows",
+    "target": ""
+  },
+  {
+    "title": "Docs",
+    "href": "https://ui-builder-docs.vercel.app/",
+    "target": "_blank"
+  }
+]

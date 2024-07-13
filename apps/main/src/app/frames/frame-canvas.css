@@ -1,21 +1,21 @@
-.group\/header:hover .group-hover\/header\:visible {
+.group\/Header:hover .group-hover\/Header\:visible {
   visibility: visible;
 }
-.group\/nav:hover .group-hover\/nav\:visible {
+.group\/Nav:hover .group-hover\/Nav\:visible {
   visibility: visible;
 }
-.group\/aside:hover .group-hover\/aside\:visible {
+.group\/Main:hover .group-hover\/Main\:visible {
   visibility: visible;
 }
-.group\/main:hover .group-hover\/main\:visible {
+.group\/Col:hover .group-hover\/Col\:visible {
   visibility: visible;
 }
-.group\/div:hover .group-hover\/div\:visible {
+.group\/Row:hover .group-hover\/Row\:visible {
   visibility: visible;
 }
-.group\/section:hover .group-hover\/section\:visible {
+.group\/Section:hover .group-hover\/Section\:visible {
   visibility: visible;
 }
-.group\/footer:hover .group-hover\/footer\:visible {
+.group\/Footer:hover .group-hover\/Footer\:visible {
   visibility: visible;
 }

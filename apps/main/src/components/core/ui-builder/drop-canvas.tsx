@@ -1,11 +1,16 @@
 "use client";
 
-import React, { DragEventHandler } from "react";
+import React, { DragEventHandler, MouseEventHandler } from "react";
 
-import { renderElement } from "@root/lib/render";
-import { createFrameElement, findNodeById } from "@root/lib/frame-manipulation";
+import { RenderFrame } from "@root/lib/render";
+import {
+  createFrameElement,
+  findNodeById,
+  removeElementById,
+} from "@root/lib/frame-manipulation";
 
 import { Frame, FrameElement } from "@root/types/frame.type";
+import { cn } from "@root/lib/utils";
 
 export type DropCanvasProps = {
   frame: Frame[];
@@ -13,9 +18,26 @@ export type DropCanvasProps = {
 };
 
 export const DropCanvas = ({ frame, updateFrame }: DropCanvasProps) => {
+  const [hoveredElement, setHoveredElement] = React.useState("");
+
   const handleDragOver: DragEventHandler<HTMLElement> = (event) => {
     event.preventDefault();
     event.stopPropagation();
+
+    setHoveredElement(event.currentTarget.id);
+  };
+
+  const handleMouseEnter: MouseEventHandler<HTMLElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setHoveredElement(event.currentTarget.id);
+  };
+  const handleMouseLeave: MouseEventHandler<HTMLElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setHoveredElement("");
   };
 
   const handleDrop: DragEventHandler<HTMLElement> = (event) => {
@@ -29,31 +51,75 @@ export const DropCanvas = ({ frame, updateFrame }: DropCanvasProps) => {
 
     const updated = [...frame];
 
-    if (target === "root-canvas") {
-      updated.push(
-        createFrameElement(element.tag, element.display, element.className),
-      );
-    } else {
-      const parent = findNodeById(frame, target);
+    if (element.id) {
+      if (element.id !== event.currentTarget.id) {
+        if (target === "root-canvas") {
+          updated.push(
+            createFrameElement(element.tag, element.display, element.className),
+          );
+        } else {
+          const parent = findNodeById(frame, target);
 
-      if (parent) {
-        parent.children.push(
+          if (parent) {
+            parent.children.push(
+              createFrameElement(
+                element.tag,
+                element.display,
+                element.className,
+              ),
+            );
+          }
+        }
+      }
+    } else {
+      if (target === "root-canvas") {
+        updated.push(
           createFrameElement(element.tag, element.display, element.className),
         );
+      } else {
+        const parent = findNodeById(frame, target);
+
+        if (parent) {
+          parent.children.push(
+            createFrameElement(element.tag, element.display, element.className),
+          );
+        }
       }
     }
 
     updateFrame(updated);
   };
 
+  const removeElement = (id: string) => {
+    updateFrame(removeElementById([...frame], id));
+  };
+
   return (
     <div
       id="root-canvas"
-      className="flex h-full w-full flex-col rounded-xl border p-4 gap-2"
+      className={cn(
+        "flex h-full w-full flex-col gap-8 rounded-xl border px-4 pb-2 pt-8 transition-all",
+        {
+          "border-primary/20 bg-primary/5": hoveredElement === "root-canvas",
+        },
+      )}
       onDragOver={handleDragOver}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onDrop={handleDrop}
     >
-      {frame.map((node) => renderElement(node, handleDrop, handleDragOver))}
+      {frame.map((node) => (
+        <RenderFrame
+          key={node.id}
+          node={node}
+          hoveredElement={hoveredElement}
+          handleDrop={handleDrop}
+          handleDragOver={handleDragOver}
+          handleMouseEnter={handleMouseEnter}
+          handleMouseLeave={handleMouseLeave}
+          removeElement={removeElement}
+        />
+      ))}
     </div>
   );
 };

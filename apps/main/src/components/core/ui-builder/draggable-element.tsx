@@ -3,8 +3,10 @@
 import React from "react";
 import { Card, CardHeader, CardTitle } from "@root/components/ui/card";
 
+import { FrameElement } from "@root/types/frame.type";
+
 export interface DragElementProps extends React.PropsWithChildren {
-  element: { display: string; tag: string; className: string };
+  element: FrameElement;
 }
 
 export function DragElement({ element }: DragElementProps) {
@@ -14,6 +16,7 @@ export function DragElement({ element }: DragElementProps) {
       onDragStart={(event) =>
         event.dataTransfer.setData("text/plain", JSON.stringify(element))
       }
+      className="cursor-pointer shadow-none active:cursor-grabbing"
     >
       <CardHeader>
         <CardTitle>{element.display}</CardTitle>

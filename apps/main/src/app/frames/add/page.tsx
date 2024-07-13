@@ -15,11 +15,10 @@ import { Frame } from "@root/types/frame.type";
 import { Json } from "@root/supabase/supabase.types";
 
 import { FRAME_ELEMENTS } from "@root/constants/frame-elements";
-import { generateUUID } from "@root/lib/utils";
 
-// import "../frame-canvas.css";
+import "../frame-canvas.css";
 
-export default function AddNewFrame() {
+export default function Page() {
   const router = useRouter();
   const { user, isSignedIn } = useUser();
 
@@ -65,8 +64,6 @@ export default function AddNewFrame() {
           <div className="flex h-7 w-full items-center gap-2">
             <p className="text-sm font-medium">Selected Template:</p>
           </div>
-          {/* <div className="h-full gap-4 rounded-xl border p-4">
-          </div> */}
           <DropCanvas frame={frame} updateFrame={updateFrame} />
         </div>
       </div>
