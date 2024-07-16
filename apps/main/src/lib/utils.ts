@@ -2,7 +2,8 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export * from "./frame-manipulation";
-export * from "./render";
+export * from "./render-element";
+export * from "./render-html";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

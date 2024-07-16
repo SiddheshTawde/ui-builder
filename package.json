@@ -8,7 +8,7 @@
     "type-check": "turbo type-check",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "clean": "turbo run clean && rm -rf node_modules && rm -rf .turbo && rm -rf .next && rm -rf package-lock.json",
+    "clean": "turbo run clean && rm -rf node_modules && rm -rf .turbo && rm -rf .next",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {

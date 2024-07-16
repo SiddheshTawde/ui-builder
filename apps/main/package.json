@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "clean": "rm -rf .turbo && rm -rf .next",
+    "clean": "rm -rf .turbo && rm -rf .next && rm -rf node_modules",
     "open-browser": "start http://localhost:3000/",
     "gen:types": "npx supabase gen types typescript --workdir src --project-id ${env:PROJECT_REF} --schema public > src/supabase/supabase.types.ts"
   },

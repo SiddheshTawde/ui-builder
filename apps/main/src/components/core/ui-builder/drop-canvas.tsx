@@ -2,7 +2,7 @@
 
 import React, { DragEventHandler, MouseEventHandler } from "react";
 
-import { RenderElement } from "@root/lib/render";
+import { RenderElement } from "@root/lib/render-element";
 import {
   createFrameElement,
   findNodeById,
@@ -104,7 +104,7 @@ export const DropCanvas = ({ frame, updateFrame }: DropCanvasProps) => {
     <div
       id="root-canvas"
       className={cn(
-        "flex h-full w-full flex-col gap-2 rounded border p-2 transition-all",
+        "flex h-full w-full flex-col rounded border p-2 transition-all",
         { "border-indigo-400": hoveredElement === "root-canvas" },
       )}
       onDragOver={handleDragOver}
