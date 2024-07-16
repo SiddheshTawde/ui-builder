@@ -13,7 +13,7 @@ export function FrameAction(props: FrameActionProps) {
   return (
     <div
       className={cn(
-        "absolute left-[-1px] top-[-25px] z-10 flex items-center gap-2 rounded-tl rounded-tr border-l border-r border-t bg-card px-2 py-1 transition-all",
+        "flex items-center gap-2 rounded-tl rounded-tr border-l border-r border-t bg-card px-2 py-1 transition-all",
         {
           "border-primary/20 bg-primary/5":
             props.hoveredElement === props.node.id,

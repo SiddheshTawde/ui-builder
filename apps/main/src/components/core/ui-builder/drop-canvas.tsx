@@ -2,7 +2,7 @@
 
 import React, { DragEventHandler, MouseEventHandler } from "react";
 
-import { RenderFrame } from "@root/lib/render";
+import { RenderElement } from "@root/lib/render";
 import {
   createFrameElement,
   findNodeById,
@@ -28,6 +28,12 @@ export const DropCanvas = ({ frame, updateFrame }: DropCanvasProps) => {
   };
 
   const handleMouseEnter: MouseEventHandler<HTMLElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setHoveredElement(event.currentTarget.id);
+  };
+  const handleMouseOver: MouseEventHandler<HTMLElement> = (event) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -98,23 +104,23 @@ export const DropCanvas = ({ frame, updateFrame }: DropCanvasProps) => {
     <div
       id="root-canvas"
       className={cn(
-        "flex h-full w-full flex-col gap-8 rounded-xl border px-4 pb-2 pt-8 transition-all",
-        {
-          "border-primary/20 bg-primary/5": hoveredElement === "root-canvas",
-        },
+        "flex h-full w-full flex-col gap-2 rounded border p-2 transition-all",
+        { "border-indigo-400": hoveredElement === "root-canvas" },
       )}
       onDragOver={handleDragOver}
+      onMouseOver={handleMouseOver}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onDrop={handleDrop}
     >
       {frame.map((node) => (
-        <RenderFrame
+        <RenderElement
           key={node.id}
           node={node}
           hoveredElement={hoveredElement}
           handleDrop={handleDrop}
           handleDragOver={handleDragOver}
+          handleMouseOver={handleMouseOver}
           handleMouseEnter={handleMouseEnter}
           handleMouseLeave={handleMouseLeave}
           removeElement={removeElement}

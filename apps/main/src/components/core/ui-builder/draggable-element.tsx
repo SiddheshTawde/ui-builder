@@ -16,9 +16,9 @@ export function DragElement({ element }: DragElementProps) {
       onDragStart={(event) =>
         event.dataTransfer.setData("text/plain", JSON.stringify(element))
       }
-      className="cursor-pointer shadow-none active:cursor-grabbing"
+      className="cursor-pointer shadow-none active:cursor-grabbing rounded"
     >
-      <CardHeader>
+      <CardHeader className="p-4">
         <CardTitle>{element.display}</CardTitle>
       </CardHeader>
     </Card>

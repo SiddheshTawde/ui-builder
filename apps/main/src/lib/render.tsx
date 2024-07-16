@@ -1,11 +1,14 @@
-import React, { createElement, MouseEventHandler } from "react";
+import React, { MouseEventHandler } from "react";
 
-import { cn, generateUUID } from "./utils";
+import { cn } from "./utils";
 
-import { PlusIcon } from "@heroicons/react/24/outline";
 import { Frame } from "@root/types/frame.type";
 import { PageJson } from "@root/types/page-json.type";
-import { FrameAction } from "@root/components/core/frame-actions";
+import { DeleteElement } from "@root/components/core/frame-actions/delete-element";
+import { FLOW_CONTENT } from "@root/constants";
+import { toast } from "@root/components/ui/use-toast";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import { Button } from "@root/components/ui/button";
 
 export function renderHTML(nodes: PageJson[], parent: HTMLElement) {
   nodes.forEach((node) => {
@@ -20,135 +23,156 @@ export function renderHTML(nodes: PageJson[], parent: HTMLElement) {
     parent.appendChild(element);
   });
 }
-
-// export function renderElement(
-//   node: Frame,
-//   hoveredElement: string,
-//   handleDrop: React.DragEventHandler<HTMLElement>,
-//   handleDragOver: React.DragEventHandler<HTMLElement>,
-//   handleMouseEnter: MouseEventHandler<HTMLElement>,
-//   handleMouseLeave: MouseEventHandler<HTMLElement>,
-//   removeElement: (id: string) => void,
-// ): React.ReactNode {
-//   return React.createElement(
-//     node.tag,
-//     {
-//       key: node.id,
-//       id: node.id,
-//       style: {},
-//       className: cn(
-//         "rounded-xl border bg-card text-card-foreground shadow-none relative rounded-tl-none transition-all",
-//         [node.className, "group/" + node.title],
-//         { "border-primary/20 bg-primary/5": hoveredElement === node.id },
-//         { "h-12": node.tag === "nav" },
-//         { "h-16": node.tag === "header" || node.tag === "footer" },
-//         { "flex-1 p-1 pt-8": node.tag === "main" },
-//         { "flex-1 p-1 pt-8": node.tag === "div" },
-//         { "flex-1": node.tag === "section" },
-//         { "w-56": node.tag === "aside" },
-//       ),
-//       onDragOver: handleDragOver,
-//       onDrop: handleDrop,
-//       onMouseEnter: handleMouseEnter,
-//       onMouseLeave: handleMouseLeave,
-//     },
-//     node.children.length > 0
-//       ? [
-//           ...node.children.map((n) =>
-//             renderElement(
-//               n,
-//               hoveredElement,
-//               handleDrop,
-//               handleDragOver,
-//               handleMouseEnter,
-//               handleMouseLeave,
-//               removeElement,
-//             ),
-//           ),
-//           <FrameAction
-//             key={node.id}
-//             node={node}
-//             hoveredElement={hoveredElement}
-//             removeElement={removeElement}
-//           />,
-//         ]
-//       : [
-//           <FrameAction
-//             key={node.id}
-//             node={node}
-//             hoveredElement={hoveredElement}
-//             removeElement={removeElement}
-//           />,
-//         ],
-//   );
-// }
-
 type RenderFrameProps = {
   node: Frame;
   hoveredElement: string;
   handleDrop: React.DragEventHandler<HTMLElement>;
   handleDragOver: React.DragEventHandler<HTMLElement>;
+  handleMouseOver: MouseEventHandler<HTMLElement>;
   handleMouseEnter: MouseEventHandler<HTMLElement>;
   handleMouseLeave: MouseEventHandler<HTMLElement>;
   removeElement: (id: string) => void;
 };
 
-export function RenderFrame(props: RenderFrameProps) {
-  return createElement(
-    props.node.tag,
-    {
-      key: props.node.id,
-      id: props.node.id,
-      style: {},
-      className: cn(
-        "rounded-xl border bg-card text-card-foreground shadow-none relative rounded-tl-none transition-all",
-        [props.node.className, "group/" + props.node.title],
-        {
-          "border-primary/20 bg-primary/5":
-            props.hoveredElement === props.node.id,
-        },
-        { "h-12": props.node.tag === "nav" },
-        {
-          "h-16": props.node.tag === "header" || props.node.tag === "footer",
-        },
-        { "flex-1 p-1 pt-8": props.node.tag === "main" },
-        { "flex-1 p-1 pt-8": props.node.tag === "div" },
-        { "flex-1": props.node.tag === "section" },
-        { "w-56": props.node.tag === "aside" },
-      ),
-      onDrop: props.handleDrop,
-      onDragOver: props.handleDragOver,
-      onMouseEnter: props.handleMouseEnter,
-      onMouseLeave: props.handleMouseLeave,
-    },
-    props.node.children.length > 0
-      ? [
-          ...props.node.children.map((n) => (
-            <RenderFrame
-              key={n.id}
-              node={n}
+type HoverPositionTypes = "top" | "right" | "bottom" | "left" | null;
+
+export function RenderElement(props: RenderFrameProps) {
+  const [hoveringPosition, setHoveringPosition] =
+    React.useState<HoverPositionTypes>(null);
+
+  console.log({ hoveringPosition });
+
+  return (
+    <>
+      <div
+        className={cn(
+          "h-0 w-full overflow-hidden border-0 border-dashed bg-indigo-400/5 transition-all",
+          {
+            "h-12 border": hoveringPosition === "top",
+          },
+        )}
+        onDragOver={props.handleDragOver}
+        onMouseOver={props.handleMouseOver}
+        onMouseEnter={props.handleMouseEnter}
+        onMouseLeave={props.handleMouseLeave}
+      >
+        Add Element Here
+      </div>
+      <div
+        id={props.node.id}
+        key={props.node.id}
+        onDrop={(event) => {
+          event.stopPropagation();
+
+          if (!FLOW_CONTENT.includes(props.node.title)) {
+            props.handleDrop(event);
+          } else {
+            toast({
+              description: "Cannot add a child element to " + props.node.title,
+            });
+          }
+        }}
+        onDragOver={(event) => {
+          const target = event.currentTarget;
+          const { clientX, clientY } = event;
+
+          const { top, left, right, bottom } = target.getBoundingClientRect();
+          const dropArea = 100; // 100px drop area
+
+          if (clientY < top + dropArea) {
+            setHoveringPosition("top");
+          } else if (clientY > bottom - dropArea) {
+            setHoveringPosition("bottom");
+          } else if (clientX < left + dropArea) {
+            setHoveringPosition("left");
+          } else if (clientX > right - dropArea) {
+            setHoveringPosition("right");
+          } else {
+            setHoveringPosition(null);
+          }
+          props.handleDragOver(event);
+        }}
+        onMouseOver={(event) => {
+          if (event.currentTarget.id !== props.node.id) {
+            setHoveringPosition(null);
+          }
+          props.handleMouseOver(event);
+        }}
+        onMouseEnter={props.handleMouseEnter}
+        onMouseLeave={props.handleMouseLeave}
+        className={cn(
+          "relative flex flex-1 flex-col items-stretch rounded border p-1 pb-6 transition-all",
+          {
+            "max-h-16":
+              props.node.title === "Header" || props.node.title === "Footer",
+          },
+          { "max-h-12": props.node.title === "Nav" },
+          {
+            "border-indigo-400 shadow shadow-indigo-400":
+              props.hoveredElement === props.node.id,
+          },
+        )}
+      >
+        <Button
+          variant="link"
+          onDragOver={(event) => event.preventDefault()}
+          className="absolute left-0 right-0 top-0 m-auto h-fit w-fit gap-x-2 p-2"
+        >
+          <PlusIcon className="h-4 w-4" />
+          <span className="text-xs">Add Above</span>
+        </Button>
+
+        <Button
+          variant="link"
+          className="absolute bottom-0 left-0 right-0 m-auto h-fit w-fit gap-x-2 p-2"
+        >
+          <PlusIcon className="h-4 w-4" />
+          <span className="text-xs">Add Below</span>
+        </Button>
+
+        <div className="flex items-center gap-x-2">
+          <p className="text-sm">{props.node.title}</p>
+          <DeleteElement
+            id={props.node.id}
+            removeElement={props.removeElement}
+          />
+        </div>
+
+        <div
+          className={cn("flex flex-1 flex-col items-stretch gap-1", {
+            "flex-row": props.node.title === "Row",
+          })}
+        >
+          {props.node.children.map((node) => (
+            <RenderElement
+              key={node.id}
+              node={node}
               hoveredElement={props.hoveredElement}
               handleDrop={props.handleDrop}
               handleDragOver={props.handleDragOver}
+              handleMouseOver={props.handleMouseOver}
               handleMouseEnter={props.handleMouseEnter}
               handleMouseLeave={props.handleMouseLeave}
               removeElement={props.removeElement}
             />
-          )),
-          <FrameAction
-            key={props.node.id}
-            node={props.node}
-            hoveredElement={props.hoveredElement}
-            removeElement={props.removeElement}
-          />,
-        ]
-      : [
-          <FrameAction
-            key={props.node.id}
-            node={props.node}
-            hoveredElement={props.hoveredElement}
-            removeElement={props.removeElement}
-          />,
-        ],
+          ))}
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          "h-0 w-full overflow-hidden border-0 border-dashed bg-indigo-400/5 transition-all",
+          {
+            "h-12 border": hoveringPosition === "bottom",
+          },
+        )}
+        onDragOver={props.handleDragOver}
+        onMouseOver={props.handleMouseOver}
+        onMouseEnter={props.handleMouseEnter}
+        onMouseLeave={props.handleMouseLeave}
+      >
+        Add Element Here
+      </div>
+    </>
   );
 }
