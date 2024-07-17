@@ -6,16 +6,20 @@ import { RenderElement } from "@root/lib/render-element";
 import {
   createFrameElement,
   findNodeById,
+  insertFrameAtPosition,
   removeElementById,
 } from "@root/lib/frame-manipulation";
 
 import { Frame, FrameElement } from "@root/types/frame.type";
 import { cn } from "@root/lib/utils";
+import { findIndex } from "lodash";
 
 export type DropCanvasProps = {
   frame: Frame[];
   updateFrame: React.Dispatch<React.SetStateAction<Frame[]>>;
 };
+
+export type HoverPositionTypes = "top" | "right" | "bottom" | "left" | null;
 
 export const DropCanvas = ({ frame, updateFrame }: DropCanvasProps) => {
   const [hoveredElement, setHoveredElement] = React.useState("");
@@ -96,6 +100,45 @@ export const DropCanvas = ({ frame, updateFrame }: DropCanvasProps) => {
     updateFrame(updated);
   };
 
+  const handleAreaDrop: DragEventHandler<HTMLElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const target = event.currentTarget.id.split("_");
+    const element: FrameElement = JSON.parse(
+      event.dataTransfer.getData("text"),
+    );
+
+    if (target[1] === "top" || target[1] === "left") {
+      const node = findNodeById(frame, target[0]);
+
+      if (node) {
+        const insertElement = createFrameElement(
+          element.tag,
+          element.display,
+          element.className,
+        );
+        updateFrame(
+          insertFrameAtPosition(frame, node.id, insertElement, "before"),
+        );
+      }
+    }
+    if (target[1] === "bottom" || target[1] === "right") {
+      const node = findNodeById(frame, target[0]);
+
+      if (node) {
+        const insertElement = createFrameElement(
+          element.tag,
+          element.display,
+          element.className,
+        );
+        updateFrame(
+          insertFrameAtPosition(frame, node.id, insertElement, "after"),
+        );
+      }
+    }
+  };
+
   const removeElement = (id: string) => {
     updateFrame(removeElementById([...frame], id));
   };
@@ -119,6 +162,7 @@ export const DropCanvas = ({ frame, updateFrame }: DropCanvasProps) => {
           node={node}
           hoveredElement={hoveredElement}
           handleDrop={handleDrop}
+          handleAreaDrop={handleAreaDrop}
           handleDragOver={handleDragOver}
           handleMouseOver={handleMouseOver}
           handleMouseEnter={handleMouseEnter}

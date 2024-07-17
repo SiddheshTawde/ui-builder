@@ -8,11 +8,13 @@ import { cn } from "./utils";
 import { FLOW_CONTENT } from "@root/constants";
 
 import { Frame } from "@root/types/frame.type";
+import { HoverPositionTypes } from "@root/components/core/ui-builder/drop-canvas";
 
 type RenderElementProps = {
   node: Frame;
   hoveredElement: string;
   handleDrop: React.DragEventHandler<HTMLElement>;
+  handleAreaDrop: React.DragEventHandler<HTMLElement>;
   handleDragOver: React.DragEventHandler<HTMLElement>;
   handleMouseOver: MouseEventHandler<HTMLElement>;
   handleMouseEnter: MouseEventHandler<HTMLElement>;
@@ -20,20 +22,9 @@ type RenderElementProps = {
   removeElement: (id: string) => void;
 };
 
-type HoverPositionTypes = "top" | "right" | "bottom" | "left" | null;
-
 export function RenderElement(props: RenderElementProps) {
   const [hoveringPosition, setHoveringPosition] =
     React.useState<HoverPositionTypes>(null);
-
-  const handleAreaDrop = (
-    position: Exclude<HoverPositionTypes, null>,
-    event: React.DragEvent<HTMLElement>,
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setHoveringPosition(null);
-  };
 
   const handleLocalDragOver = (event: React.DragEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -59,13 +50,17 @@ export function RenderElement(props: RenderElementProps) {
   return (
     <>
       <div
+        id={props.node.id + "_top"}
         className={cn(
           "flex h-0 w-0 items-center justify-center overflow-hidden border-0 border-dashed bg-indigo-400/5 transition-all",
           {
             "h-12 w-full border": hoveringPosition === "top",
           },
         )}
-        onDrop={(event) => handleAreaDrop("top", event)}
+        onDrop={(event) => {
+          props.handleAreaDrop(event);
+          setHoveringPosition(null);
+        }}
         onDragOver={props.handleDragOver}
         onMouseOver={(event) => {
           if (event.currentTarget.id !== props.node.id) {
@@ -77,13 +72,17 @@ export function RenderElement(props: RenderElementProps) {
         <PlusIcon className="h-6 w-6" />
       </div>
       <div
+        id={props.node.id + "_left"}
         className={cn(
           "flex h-0 w-0 items-center justify-center overflow-hidden border-0 border-dashed bg-indigo-400/5 transition-all",
           {
             "h-full w-12 border": hoveringPosition === "left",
           },
         )}
-        onDrop={(event) => handleAreaDrop("left", event)}
+        onDrop={(event) => {
+          props.handleAreaDrop(event);
+          setHoveringPosition(null);
+        }}
         onDragOver={props.handleDragOver}
         onMouseOver={(event) => {
           if (event.currentTarget.id !== props.node.id) {
@@ -155,6 +154,7 @@ export function RenderElement(props: RenderElementProps) {
               node={node}
               hoveredElement={props.hoveredElement}
               handleDrop={props.handleDrop}
+              handleAreaDrop={props.handleAreaDrop}
               handleDragOver={props.handleDragOver}
               handleMouseOver={props.handleMouseOver}
               handleMouseEnter={props.handleMouseEnter}
@@ -167,13 +167,17 @@ export function RenderElement(props: RenderElementProps) {
       {/* Main Card -- END */}
 
       <div
+        id={props.node.id + "_right"}
         className={cn(
           "flex h-0 w-0 items-center justify-center overflow-hidden border-0 border-dashed bg-indigo-400/5 transition-all",
           {
             "h-full w-12 border": hoveringPosition === "right",
           },
         )}
-        onDrop={(event) => handleAreaDrop("right", event)}
+        onDrop={(event) => {
+          props.handleAreaDrop(event);
+          setHoveringPosition(null);
+        }}
         onDragOver={props.handleDragOver}
         onMouseOver={(event) => {
           if (event.currentTarget.id !== props.node.id) {
@@ -186,13 +190,17 @@ export function RenderElement(props: RenderElementProps) {
       </div>
 
       <div
+        id={props.node.id + "_bottom"}
         className={cn(
           "flex h-0 w-0 items-center justify-center overflow-hidden border-0 border-dashed bg-indigo-400/5 transition-all",
           {
             "h-12 w-full border": hoveringPosition === "bottom",
           },
         )}
-        onDrop={(event) => handleAreaDrop("bottom", event)}
+        onDrop={(event) => {
+          props.handleAreaDrop(event);
+          setHoveringPosition(null);
+        }}
         onDragOver={props.handleDragOver}
         onMouseOver={(event) => {
           if (event.currentTarget.id !== props.node.id) {

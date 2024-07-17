@@ -6,6 +6,17 @@ import { useRouter } from "next/navigation";
 
 import { supabase } from "@root/supabase/server";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@root/components/ui/alert-dialog";
 import { Button } from "@root/components/ui/button";
 import { toast } from "@root/components/ui/use-toast";
 import { SaveDialog } from "@root/components/core/save-dialog";
@@ -24,6 +35,7 @@ export default function Page() {
 
   const [frameName, setFrameName] = useState("");
   const [frame, updateFrame] = useState<Frame[]>([]);
+  const [showSaveDialog, toggleSaveDialog] = useState(false);
 
   const handleSaving = async () => {
     const { error } = await supabase
@@ -48,6 +60,14 @@ export default function Page() {
     });
   };
 
+  const handleGoBack = () => {
+    if (frame.length === 0) {
+      router.back();
+    } else {
+      toggleSaveDialog(true);
+    }
+  };
+
   return (
     <main className="container mx-auto flex h-[calc(100vh-64px)] flex-col">
       <div className="mt-4 flex flex-1 items-stretch gap-x-4">
@@ -69,7 +89,7 @@ export default function Page() {
       </div>
 
       <div className="flex items-center justify-end gap-x-4 border-b py-4">
-        <Button variant="link" onClick={() => router.back()}>
+        <Button variant="link" onClick={handleGoBack}>
           Go Back
         </Button>
 
@@ -80,6 +100,23 @@ export default function Page() {
           setFrameName={setFrameName}
         />
       </div>
+
+      <AlertDialog open={showSaveDialog} onOpenChange={toggleSaveDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unsaved Frame</AlertDialogTitle>
+            <AlertDialogDescription>
+              Going Back without saving will Discard current Frame setup.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => router.back()}>
+              Discard and Go Back
+            </AlertDialogCancel>
+            <AlertDialogAction>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }

@@ -51,3 +51,40 @@ export function removeElementById(array: Frame[], id: string) {
 
   return array;
 }
+
+export function insertFrameAtPosition(
+  data: Frame[],
+  targetId: string,
+  newObj: Frame,
+  position: "before" | "after",
+): Frame[] {
+  for (let i = 0; i < data.length; i++) {
+    const currentObject = data[i];
+
+    // If the target object is found
+    if (currentObject.id === targetId) {
+      if (position === "before") {
+        data.splice(i, 0, newObj);
+      } else if (position === "after") {
+        data.splice(i + 1, 0, newObj);
+      }
+      return data;
+    }
+
+    // If the current object has children, search recursively
+    if (currentObject.children) {
+      const updatedChildren = insertFrameAtPosition(
+        currentObject.children,
+        targetId,
+        newObj,
+        position,
+      );
+      if (updatedChildren !== currentObject.children) {
+        currentObject.children = updatedChildren;
+        return data;
+      }
+    }
+  }
+
+  return data;
+}
