@@ -22,7 +22,7 @@ export const FRAME_ELEMENTS = [
   {
     display: "Column",
     tag: "div",
-    className: "flex-1 flex flex-col gap-8",
+    className: "flex-1 flex flex-col gap-2",
   },
   {
     display: "Row",

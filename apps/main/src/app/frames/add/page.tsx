@@ -15,7 +15,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@root/components/ui/alert-dialog";
 import { Button } from "@root/components/ui/button";
 import { toast } from "@root/components/ui/use-toast";
@@ -28,6 +27,8 @@ import { Json } from "@root/supabase/supabase.types";
 import { FRAME_ELEMENTS } from "@root/constants/frame-elements";
 
 import "../frame-canvas.css";
+import Link from "next/link";
+import { ArrowUpRightIcon } from "@heroicons/react/24/outline";
 
 export default function Page() {
   const router = useRouter();
@@ -53,9 +54,25 @@ export default function Page() {
 
     toast({
       title: error ? "There was some error" : "Frame saved",
-      description: error
-        ? error.message
-        : "Added new frame to library: " + frameName,
+      description: error ? (
+        error.message
+      ) : (
+        <div className="flex items-center">
+          <span>Added new frame to library:</span>
+          <Button
+            variant="link"
+            className="flex items-center gap-x-1 px-2"
+            asChild
+          >
+            <Link
+              href={"/frames/" + frameName.replaceAll(" ", "-").toLowerCase()}
+            >
+              {frameName.replaceAll(" ", "-").toLowerCase()}{" "}
+              <ArrowUpRightIcon className="h-3 w-3" />
+            </Link>
+          </Button>
+        </div>
+      ),
       variant: error ? "destructive" : "default",
     });
   };
