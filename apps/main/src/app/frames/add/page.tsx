@@ -98,9 +98,7 @@ export default function Page() {
         </div>
 
         <div className="flex w-full flex-1 flex-col gap-4">
-          <div className="flex h-7 w-full items-center gap-2">
-            <p className="text-sm font-medium">Selected Template:</p>
-          </div>
+          <div className="flex h-7 w-full items-center gap-2" />
           <DropCanvas frame={frame} updateFrame={updateFrame} />
         </div>
       </div>

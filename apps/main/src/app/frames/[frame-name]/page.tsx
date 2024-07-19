@@ -23,7 +23,7 @@ export default async function FramePage({ params }: FramePageProps) {
 
   return (
     <main className="container mx-auto flex h-[calc(100vh-64px)] items-stretch gap-x-4 overflow-y-auto py-4">
-      <div className="flex h-full w-full max-w-screen-md flex-col gap-y-2 rounded border p-2">
+      <div className="flex h-full w-full max-w-screen-lg flex-col gap-y-2 rounded border p-2">
         {(frame.template as Frame[]).length == 0
           ? null
           : (frame.template as Frame[]).map((node) => (

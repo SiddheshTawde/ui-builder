@@ -4,6 +4,7 @@ import { cn } from "./utils";
 export default function RenderFrame(node: Frame) {
   return (
     <node.tag
+      key={node.id}
       className={cn(
         "flex-1 rounded border",
         {
